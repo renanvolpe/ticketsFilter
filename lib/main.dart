@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_free_project/filterScreen.dart';
+import 'package:go_free_project/filter_screen.dart';
 import 'package:go_free_project/filtro.dart';
 
 void main() {
