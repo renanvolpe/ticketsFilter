@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_free_project/filtro.dart';
 
 void main() {
   runApp(const MyApp());
@@ -7,39 +8,22 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+    return const MaterialApp(
+      title: 'Teste GoFree',
+      
+      home: MyHomePage(title: 'Lista de participantes'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  final Filtro? filtro;
+  const MyHomePage({Key? key, required this.title, this.filtro}) : super(key: key);
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+ 
 
   final String title;
 
@@ -60,56 +44,169 @@ class _MyHomePageState extends State<MyHomePage> {
       _counter++;
     });
   }
-
+  TextEditingController filterController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+   
     return Scaffold(
+      
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        shape: const Border(
+          top:  BorderSide(width: 1, color: Colors.purple),
+          left: BorderSide(width: 1, color: Colors.purple),
+          right: BorderSide(width: 1, color: Colors.purple),
+          
+        ),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_back, color: Colors.purple, size: 20,)),
+            
+             Expanded(
+               child: Center(
+                 child: Text(
+                        widget.title,
+                        style: const TextStyle(
+                          
+                          fontWeight: FontWeight.normal,
+                          color: Colors.purple
+                        ),
+                        ),
+               ),
+             ),
+            
+          ],
+        ) ,
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+      body: Container(
+        decoration: const BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(width: 1, color: Colors.purple),
+                      left: BorderSide(width: 1, color: Colors.purple),
+                      right: BorderSide(width: 1, color: Colors.purple),
+                  )),
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          
+          mainAxisAlignment: MainAxisAlignment.start,
+          children:  <Widget>[
+            
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15),
+            child: TextField(
+              controller: filterController,
+              onChanged: (value){
+                  //atualiza o filtro
+                  setState(() {
+                    
+                  });
+                },
+
+              decoration: const InputDecoration(
+                filled: true,
+                fillColor: Color.fromARGB(30, 158, 158, 158),
+                hintText: "Nome, e-mail, localizador",
+                hintStyle: TextStyle(color: Colors.grey, fontSize: 15, ),
+                suffixIcon: Icon(Icons.search, color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(25))
+                )
+              ),
+                
+          )) ,
+
+          
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            padding: const EdgeInsets.all(10),
+            
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(top:15),
+                  
+                  child: const Text("X participantes", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.purple, fontSize: 14),)),
+                const Spacer(),
+
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  decoration: const BoxDecoration(
+                    color: Color.fromARGB(73, 158, 158, 158),
+                    borderRadius: BorderRadius.all(Radius.circular(15))
+                  ),
+                  child: TextButton(
+                    onPressed: (){
+                      
+                    },
+                    child: Row(
+                    children: const [
+                      Text("Filtrar  ", style: TextStyle(color: Colors.purple, fontWeight: FontWeight.normal, fontSize: 15),),
+                      Icon(Icons.segment, color:  Colors.purple, size: 15,)
+                    ],
+                ),
+                  ),),
+                  
+                  
+              ],
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
+          ),
+
+          Container(
+            //100 é o tamanho de cada widget 
+            height: 3*100,
+            child: ListView.builder(
+                      itemCount: 2,
+                      itemBuilder:  ((context, i) {
+                        return cadaParticipante();
+                      }
+                      )
+                    ),
+          )            
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      
+    );
+  }
+  Widget cadaParticipante(){
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: const BoxDecoration(
+        border: Border(
+          bottom: BorderSide(width: 1, color: Color.fromARGB(73, 158, 158, 158))
+        )
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 15),
+     child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          margin: const EdgeInsets.only(top: 10),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              Text("Nome SobreNome", style: TextStyle(
+                fontWeight: FontWeight.bold,
+                overflow: TextOverflow.fade,
+                fontSize: 15
+              ),),
+              Text("tipo ", textAlign: TextAlign.start,
+               style: TextStyle( 
+                fontSize: 14,
+                fontWeight: FontWeight.normal),),
+              Text("localizador",
+               style: TextStyle(
+                fontSize: 15,
+                color: Colors.grey),),
+            ],
+          ),
+        ),
+        const Spacer(),
+        const Icon(Icons.check, color: Colors.green,)
+      ],
+     ), 
     );
   }
 }
