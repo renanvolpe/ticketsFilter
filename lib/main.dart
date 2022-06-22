@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_free_project/filterScreen.dart';
 import 'package:go_free_project/filtro.dart';
 
 void main() {
@@ -32,18 +33,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
+
+  
   TextEditingController filterController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -51,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       
       appBar: AppBar(
+        
         shape: const Border(
           top:  BorderSide(width: 1, color: Colors.purple),
           left: BorderSide(width: 1, color: Colors.purple),
@@ -59,22 +52,22 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         backgroundColor: Colors.white,
         elevation: 0,
+        leading:  IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_back, color: Colors.purple, size: 20,)),
+        
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_back, color: Colors.purple, size: 20,)),
+           
             
-             Expanded(
-               child: Center(
-                 child: Text(
-                        widget.title,
-                        style: const TextStyle(
-                          
-                          fontWeight: FontWeight.normal,
-                          color: Colors.purple
-                        ),
-                        ),
-               ),
+             Center(
+               child: Text(
+                      widget.title,
+                      style: const TextStyle(
+                        
+                        fontWeight: FontWeight.normal,
+                        color: Colors.purple
+                      ),
+                      ),
              ),
             
           ],
@@ -138,7 +131,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                   child: TextButton(
                     onPressed: (){
+                      final filtragem = Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const FilterScreen()),
+                      );
                       
+                      // para página de filtros
                     },
                     child: Row(
                     children: const [
