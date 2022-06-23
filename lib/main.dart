@@ -199,7 +199,9 @@ List<Participante> listaGeral = <Participante>[
                             Container(
                               padding: const EdgeInsets.all(6),
                               child: Text(
-                                verificaQtdFiltros(filtro).toString(),
+                                verificaQtdFiltros(filtro) > 0 
+                                ? verificaQtdFiltros(filtro).toString()
+                                : "",
                                 style: const TextStyle(
                                     color: Colors.purple,
                                     fontWeight: FontWeight.normal,
@@ -207,7 +209,7 @@ List<Participante> listaGeral = <Participante>[
                               ),
                             ),
                             const Text(
-                              "  Filtrar  ",
+                              " Filtrar  ",
                               style: TextStyle(
                                   color: Colors.purple,
                                   fontWeight: FontWeight.normal,
