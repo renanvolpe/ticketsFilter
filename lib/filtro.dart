@@ -1,11 +1,11 @@
+import 'package:go_free_project/ticketType.dart';
+
 class Filtro {
-  late String email;
-  late String nome;
-  late String localizador;
-  late bool checkIn;
-  late String tipoIngresso;
-  
-  Filtro(String email) {
-    email = this.email;
-  }
+   String? email;
+   String? nome;
+   String? localizador;
+   bool? checkIn;
+   TicketType? tipoIngresso;
+
+  Filtro( [this.email , this.nome, this.localizador, this.checkIn,  this.tipoIngresso ]);
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_free_project/ticketType.dart';
 
+import 'filtro.dart';
+
 
 
 class FilterScreen extends StatefulWidget {
@@ -65,7 +67,6 @@ class _FilterScreenState extends State<FilterScreen> {
                                     groupValue: _character,
                                     onChanged: (TicketType? value) {
                                       setState(() {
-                                        print("entrou");
                                         _character = value;
                                       });
                                     },
@@ -87,7 +88,6 @@ class _FilterScreenState extends State<FilterScreen> {
                                     groupValue: _character,
                                     onChanged: (TicketType? value) {
                                       setState(() {
-                                        print("entrou2");
                                         _character = value;
                                       });
                                     },
@@ -109,7 +109,6 @@ class _FilterScreenState extends State<FilterScreen> {
                                     groupValue: _character,
                                     onChanged: (TicketType? value) {
                                       setState(() {
-                                        print("entrou");
                                         _character = value;
                                       });
                                     },
@@ -133,7 +132,6 @@ class _FilterScreenState extends State<FilterScreen> {
                                     groupValue: _character,
                                     onChanged: (TicketType? value) {
                                       setState(() {
-                                        print("entrou");
                                         _character = value;
                                       });
                                     },
@@ -289,6 +287,11 @@ class _FilterScreenState extends State<FilterScreen> {
                 children: [
                   TextButton(
                         onPressed: (){
+                          TicketType? tipoTodos = TicketType.todos;
+                          Filtro filtro = Filtro( );
+                          filtro.tipoIngresso = tipoTodos;
+                            
+                          Navigator.pop(context, filtro);
                         setState(() {
                           
                         });
@@ -300,23 +303,31 @@ class _FilterScreenState extends State<FilterScreen> {
                         borderRadius: const BorderRadius.all(Radius.circular(20)),
                         border: active1 ? Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),) : Border.all(width: 1.0, color:  Colors.purple ,)
                       ),
-                      child:  
-                           const Text("Limpar filtros", style: TextStyle( fontSize: 15, color: Colors.black, fontWeight: FontWeight.normal)) 
+                      child: const Text("Limpar filtros", style: TextStyle( fontSize: 15, color: Colors.black, fontWeight: FontWeight.normal)) 
                            )
                       ),
 
                       TextButton(
                         onPressed: (){
-                        setState(() {
-                          active2 = !active2;
-                        });
+                          Filtro filtro = Filtro();
+                          if(active1 == active2)
+                            filtro.checkIn = null;
+                          else if(active1 = true)
+                            filtro.checkIn = true;
+                          else if(active2 = false)
+                            filtro.checkIn = false;
+
+                            filtro.tipoIngresso = _character;
+
+                           Navigator.pop(context, filtro);
+
                           },
                           child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 18),
                           decoration:  BoxDecoration(
                             color:  Colors.purple,
                             borderRadius: const BorderRadius.all(Radius.circular(20)),
-                            border: active2 ? Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),) : Border.all(width: 1.0, color:  Colors.purple ,)
+                            border: Border.all(width: 1.0, color:  Colors.purple ,)
                           ),
                             child:  
                             const Text("Aplicar filtros", style: TextStyle( fontSize: 15, color: Colors.white, fontWeight: FontWeight.normal)) 

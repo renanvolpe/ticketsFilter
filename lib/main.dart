@@ -1,31 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:go_free_project/filter_screen.dart';
 import 'package:go_free_project/filtro.dart';
+import 'package:go_free_project/ticketType.dart';
+import 'package:go_free_project/participante.dart';
+
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  
   const MyApp({Key? key}) : super(key: key);
-
-
+  
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Teste GoFree',
-      
       home: MyHomePage(title: 'Lista de participantes'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  final Filtro? filtro;
-  const MyHomePage({Key? key, required this.title, this.filtro}) : super(key: key);
-
  
+  const MyHomePage({Key? key, required this.title})
+      : super(key: key);
 
+  
   final String title;
 
   @override
@@ -33,178 +35,227 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
+   List<Participante>? participantes;
+  Filtro? filtro;
+  int qtdFiltros = 0;
 
   
+
+  List<Participante>? generateParticipantes(){
+      //criando pessoas aleatorias
+
+      Participante part1 = Participante("jef@gmail.com", "Jeferson", "AKLDFNAOH", false, TicketType.gratuito);
+      Participante part2 = Participante("le@gmail.com.br", "Leticia", "SDF789SDF7", true, TicketType.teste);
+      Participante part3 = Participante("elisa@hotmail.com", "Elisa", "SALNKF134", false, TicketType.teste);
+      Participante part4 = Participante("renan@gmail.com", "Renan", "FJLKDASFJ", false, TicketType.meia);
+    
+      List<Participante>  listaGeral = <Participante>[part1, part2, part3, part4, part1, part2];
+      
+      return listaGeral;
+  }
+
+  
+
   TextEditingController filterController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-   
+
+    participantes = generateParticipantes();
+
     return Scaffold(
-      
       appBar: AppBar(
-        
         shape: const Border(
-          top:  BorderSide(width: 1, color: Colors.purple),
+          top: BorderSide(width: 1, color: Colors.purple),
           left: BorderSide(width: 1, color: Colors.purple),
           right: BorderSide(width: 1, color: Colors.purple),
-          
         ),
         backgroundColor: Colors.white,
         elevation: 0,
-        leading:  IconButton(onPressed: (){}, icon: const Icon(Icons.arrow_back, color: Colors.purple, size: 20,)),
-        
+        leading: IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.purple,
+              size: 20,
+            )),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-           
-            
-             Center(
-               child: Text(
-                      widget.title,
-                      style: const TextStyle(
-                        
-                        fontWeight: FontWeight.normal,
-                        color: Colors.purple
-                      ),
-                      ),
-             ),
-            
-          ],
-        ) ,
-      ),
-      body: Container(
-        decoration: const BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(width: 1, color: Colors.purple),
-                      left: BorderSide(width: 1, color: Colors.purple),
-                      right: BorderSide(width: 1, color: Colors.purple),
-                  )),
-        child: Column(
-          
-          mainAxisAlignment: MainAxisAlignment.start,
-          children:  <Widget>[
-            
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
-            child: TextField(
-              controller: filterController,
-              onChanged: (value){
-                  //atualiza o filtro
-                  setState(() {
-                    
-                  });
-                },
-
-              decoration: const InputDecoration(
-                filled: true,
-                fillColor: Color.fromARGB(30, 158, 158, 158),
-                hintText: "Nome, e-mail, localizador",
-                hintStyle: TextStyle(color: Colors.grey, fontSize: 15, ),
-                suffixIcon: Icon(Icons.search, color: Colors.grey),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(25))
-                )
+            Center(
+              child: Text(
+                widget.title,
+                style: const TextStyle(
+                    fontWeight: FontWeight.normal, color: Colors.purple),
               ),
-                
-          )) ,
-
-          
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-            padding: const EdgeInsets.all(10),
-            
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  margin: const EdgeInsets.only(top:15),
-                  
-                  child: const Text("X participantes", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.purple, fontSize: 14),)),
-                const Spacer(),
-
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 5),
-                  decoration: const BoxDecoration(
-                    color: Color.fromARGB(73, 158, 158, 158),
-                    borderRadius: BorderRadius.all(Radius.circular(15))
-                  ),
-                  child: TextButton(
-                    onPressed: (){
-                      final filtragem = Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => const FilterScreen()),
-                      );
-                      
-                      // para página de filtros
-                    },
-                    child: Row(
-                    children: const [
-                      Text("Filtrar  ", style: TextStyle(color: Colors.purple, fontWeight: FontWeight.normal, fontSize: 15),),
-                      Icon(Icons.segment, color:  Colors.purple, size: 15,)
-                    ],
-                ),
-                  ),),
-                  
-                  
-              ],
             ),
-          ),
-
-          Container(
-            //100 é o tamanho de cada widget 
-            height: 3*100,
-            child: ListView.builder(
-                      itemCount: 2,
-                      itemBuilder:  ((context, i) {
-                        return cadaParticipante();
-                      }
-                      )
-                    ),
-          )            
           ],
         ),
       ),
-      
-    );
-  }
-  Widget cadaParticipante(){
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: const BoxDecoration(
-        border: Border(
-          bottom: BorderSide(width: 1, color: Color.fromARGB(73, 158, 158, 158))
-        )
-      ),
-      margin: const EdgeInsets.symmetric(horizontal: 15),
-     child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Container(
-          margin: const EdgeInsets.only(top: 10),
+      body: SingleChildScrollView(
+        //physics: const NeverScrollableScrollPhysics(),
+        child: Container(
+          decoration: const BoxDecoration(
+              border: Border(
+            bottom: BorderSide(width: 1, color: Colors.purple),
+            left: BorderSide(width: 1, color: Colors.purple),
+            right: BorderSide(width: 1, color: Colors.purple),
+          )),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text("Nome SobreNome", style: TextStyle(
-                fontWeight: FontWeight.bold,
-                overflow: TextOverflow.fade,
-                fontSize: 15
-              ),),
-              Text("tipo ", textAlign: TextAlign.start,
-               style: TextStyle( 
-                fontSize: 14,
-                fontWeight: FontWeight.normal),),
-              Text("localizador",
-               style: TextStyle(
-                fontSize: 15,
-                color: Colors.grey),),
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 15),
+                  child: TextField(
+                    controller: filterController,
+                    onChanged: (value) {
+                      //atualiza o filtro
+                      setState(() {});
+                    },
+                    decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Color.fromARGB(30, 158, 158, 158),
+                        hintText: "Nome, e-mail, localizador",
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 15,
+                        ),
+                        suffixIcon: Icon(Icons.search, color: Colors.grey),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(25)))),
+                  )),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        margin: const EdgeInsets.only(top: 15),
+                        child:  Text(
+                          participantes!.length.toString()+" participantes",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.purple,
+                              fontSize: 14),
+                        )),
+                    const Spacer(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      decoration: const BoxDecoration(
+                          color: Color.fromARGB(73, 158, 158, 158),
+                          borderRadius: BorderRadius.all(Radius.circular(25))),
+                      child: TextButton(
+                        onPressed: () async {
+                          final Filtro filtragem = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const FilterScreen()),
+                          );
+
+                          setState(() {
+                            //função de verificar filtros
+
+                            if (filtragem.tipoIngresso != TicketType.todos)  qtdFiltros++;
+
+                            if (filtragem.checkIn == true) qtdFiltros++;
+
+                            filtro = filtragem;
+                          });
+                          print(qtdFiltros);
+                          
+
+                          // para página de filtros
+                        },
+                        child: Row(
+                          children: [
+                              Container(
+                                padding: EdgeInsets.all(6),
+                                
+                                child: Text(qtdFiltros.toString(), style: const TextStyle(
+                                        color: Colors.purple,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 14),),
+                              ),
+                              const Text(
+                                    "  Filtrar  ",
+                                    style: TextStyle(
+                                        color: Colors.purple,
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 14),
+                                  ),
+                                
+                            const Icon(
+                              Icons.segment,
+                              color: Colors.purple,
+                              size: 14,
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                //100 é o tamanho de cada widget
+                height: participantes!.length * 90,
+                child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                 shrinkWrap: true,
+                    itemCount: participantes!.length,
+                    itemBuilder: ((context, i) {
+                      return cadaParticipante(participantes!, i);
+                    })),
+              )
             ],
           ),
         ),
-        const Spacer(),
-        const Icon(Icons.check, color: Colors.green,)
-      ],
-     ), 
+      ),
+    );
+  }
+
+  Widget cadaParticipante(List<Participante> participantes, int i) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      decoration: const BoxDecoration(
+          border: Border(
+              bottom: BorderSide(
+                  width: 1, color: Color.fromARGB(73, 158, 158, 158)))),
+      margin: const EdgeInsets.symmetric(horizontal: 15),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            margin: const EdgeInsets.only(top: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children:  [
+                Text(
+                  participantes[i].nome,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.fade,
+                      fontSize: 15),
+                ),
+                Text(
+                   participantes[i].tipoIngresso.toString(),
+                  textAlign: TextAlign.start,
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
+                ),
+                Text(
+                   participantes[i].localizador,
+                  style: const TextStyle(fontSize: 15, color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+          const Spacer(),
+            participantes[i].checkIn
+             ? Icon(Icons.check,color: Colors.green) 
+             : Container()
+          
+        ],
+      ),
     );
   }
 }
