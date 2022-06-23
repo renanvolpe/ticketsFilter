@@ -67,7 +67,7 @@ class _FilterScreenState extends State<FilterScreen> {
                                     groupValue: _character,
                                     onChanged: (TicketType? value) {
                                       setState(() {
-                                        _character = value;
+                                        _character = null;
                                       });
                                     },
                                   ),
@@ -151,8 +151,8 @@ class _FilterScreenState extends State<FilterScreen> {
   
   TicketType? _character = TicketType.todos;
   
-  bool active1 = true;
-  bool active2 = true;
+  bool desaactive1 = true;
+  bool desaactive2 = true;
 
   @override
   Widget build(BuildContext context) {
@@ -209,17 +209,18 @@ class _FilterScreenState extends State<FilterScreen> {
                 TextButton(
                       onPressed: (){
                       setState(() {
-                        active1 = !active1;
+                        desaactive1 = !desaactive1;
                       });
+                     
                     },
                     child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration:  BoxDecoration(
-                      color: active1 ? Colors.white : Colors.purple,
+                      color: desaactive1 ? Colors.white : Colors.purple,
                       borderRadius: const BorderRadius.all(Radius.circular(18)),
-                      border: active1 ? Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),) : Border.all(width: 1.0, color:  Colors.purple ,)
+                      border: desaactive1 ? Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),) : Border.all(width: 1.0, color:  Colors.purple ,)
                     ),
-                    child: active1 
+                    child: desaactive1 
                         ? const Text("Chek-in realizado", style: TextStyle( fontSize: 15, color: Colors.black, fontWeight: FontWeight.normal)) 
                         : const Text("Chek-in realizado", style: TextStyle( fontSize: 15, color: Colors.white, fontWeight: FontWeight.normal))
                          )
@@ -228,17 +229,18 @@ class _FilterScreenState extends State<FilterScreen> {
                     TextButton(
                       onPressed: (){
                       setState(() {
-                        active2 = !active2;
+                        desaactive2 = !desaactive2;
                       });
+                      
                         },
                         child: Container(
                         padding: const EdgeInsets.all(10),
                         decoration:  BoxDecoration(
-                          color: active2 ? Colors.white : Colors.purple,
+                          color: desaactive2 ? Colors.white : Colors.purple,
                           borderRadius: const BorderRadius.all(Radius.circular(18)),
-                          border: active2 ? Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),) : Border.all(width: 1.0, color:  Colors.purple ,)
+                          border: desaactive2 ? Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),) : Border.all(width: 1.0, color:  Colors.purple ,)
                         ),
-                          child: active2 
+                          child: desaactive2 
                           ? const Text("Chek-in não realizado", style: TextStyle( fontSize: 15, color: Colors.black, fontWeight: FontWeight.normal)) 
                           : const Text("Chek-in não realizado", style: TextStyle( fontSize: 15, color: Colors.white, fontWeight: FontWeight.normal))
                         )
@@ -301,7 +303,7 @@ class _FilterScreenState extends State<FilterScreen> {
                       decoration:  BoxDecoration(
                         color:  Colors.white ,
                         borderRadius: const BorderRadius.all(Radius.circular(20)),
-                        border: active1 ? Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),) : Border.all(width: 1.0, color:  Colors.purple ,)
+                        border:  Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),)
                       ),
                       child: const Text("Limpar filtros", style: TextStyle( fontSize: 15, color: Colors.black, fontWeight: FontWeight.normal)) 
                            )
@@ -309,15 +311,19 @@ class _FilterScreenState extends State<FilterScreen> {
 
                       TextButton(
                         onPressed: (){
-                          Filtro filtro = Filtro();
-                          if(active1 == active2)
-                            filtro.checkIn = null;
-                          else if(active1 = true)
-                            filtro.checkIn = true;
-                          else if(active2 = false)
-                            filtro.checkIn = false;
+                          
 
-                            filtro.tipoIngresso = _character;
+                          Filtro filtro = Filtro();
+                          
+                          if(desaactive1 == desaactive2)
+                            filtro.checkIn = null;
+                          else if(desaactive1 == false)
+                            filtro.checkIn = true;
+                          else if(desaactive2 == false)
+                            filtro.checkIn = false;
+                            
+                            
+                          filtro.tipoIngresso = _character;
 
                            Navigator.pop(context, filtro);
 

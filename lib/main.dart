@@ -4,15 +4,13 @@ import 'package:go_free_project/filtro.dart';
 import 'package:go_free_project/ticketType.dart';
 import 'package:go_free_project/participante.dart';
 
-
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  
   const MyApp({Key? key}) : super(key: key);
-  
+
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -23,11 +21,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
- 
-  const MyHomePage({Key? key, required this.title})
-      : super(key: key);
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
 
-  
   final String title;
 
   @override
@@ -35,33 +30,68 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-   List<Participante>? participantes;
-  Filtro? filtro;
+  List<Participante>? participantes;
+  
+  Filtro filtro = Filtro();
+  
   int qtdFiltros = 0;
 
+  List<Participante>? generateParticipantes() {
+    //criando pessoas aleatorias
   
-
-  List<Participante>? generateParticipantes(){
-      //criando pessoas aleatorias
-
-      Participante part1 = Participante("jef@gmail.com", "Jeferson", "AKLDFNAOH", false, TicketType.gratuito);
-      Participante part2 = Participante("le@gmail.com.br", "Leticia", "SDF789SDF7", true, TicketType.teste);
-      Participante part3 = Participante("elisa@hotmail.com", "Elisa", "SALNKF134", false, TicketType.teste);
-      Participante part4 = Participante("renan@gmail.com", "Renan", "FJLKDASFJ", false, TicketType.meia);
+    Participante part1 = Participante(
+        "jef@gmail.com", "Jeferson", "AKLDFNAOH", false, TicketType.gratuito);
+    Participante part2 = Participante(
+        "le@gmail.com.br", "Leticia", "SDF789SDF7", true, TicketType.teste);
+    Participante part3 = Participante(
+        "elisa@hotmail.com", "Elisa", "SALNKF134", false, TicketType.teste);
+    Participante part4 = Participante(
+        "cassio@gmail.com", "Cassio", "ASDSADAD", false, TicketType.meia);
+    Participante part5 = Participante(
+        "iago@gmail.com.br", "Iago", "FDSFSDC", true, TicketType.teste);
     
-      List<Participante>  listaGeral = <Participante>[part1, part2, part3, part4, part1, part2];
-      
-      return listaGeral;
+
+
+List<Participante> listaGeral = <Participante>[
+      part1,
+      part2,
+      part3,
+      part4,
+      part5,
+      part1,
+      part2,
+      part4,
+      part5,
+      part3
+    ];
+
+    return listaGeral;
   }
 
-  
+  int verificaQtdFiltros(Filtro filtros){
+    qtdFiltros = 0;
+
+    if(filtros.nome != null)
+    qtdFiltros++;
+
+    if(filtros.checkIn == true)
+    qtdFiltros++;
+
+    if(filtros.tipoIngresso != TicketType.todos)
+    qtdFiltros++;
+
+  return qtdFiltros;
+  }
 
   TextEditingController filterController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-
     participantes = generateParticipantes();
 
+    if(filtro.tipoIngresso == null){
+      filtro.tipoIngresso = TicketType.todos;
+    }
+    
     return Scaffold(
       appBar: AppBar(
         shape: const Border(
@@ -108,8 +138,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: TextField(
                     controller: filterController,
                     onChanged: (value) {
-                      //atualiza o filtro
-                      setState(() {});
+                      setState(() {
+                        if (value == "")
+                          filtro.nome = null;
+                        else
+                          filtro.nome = value;
+                      });
                     },
                     decoration: const InputDecoration(
                         filled: true,
@@ -121,7 +155,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                         suffixIcon: Icon(Icons.search, color: Colors.grey),
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(25)))),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(25)))),
                   )),
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
@@ -131,8 +166,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   children: [
                     Container(
                         margin: const EdgeInsets.only(top: 15),
-                        child:  Text(
-                          participantes!.length.toString()+" participantes",
+                        child: Text(
+                          participantes!.length.toString() + " participantes",
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.purple,
@@ -153,37 +188,31 @@ class _MyHomePageState extends State<MyHomePage> {
                           );
 
                           setState(() {
-                            //função de verificar filtros
-
-                            if (filtragem.tipoIngresso != TicketType.todos)  qtdFiltros++;
-
-                            if (filtragem.checkIn == true) qtdFiltros++;
-
+                            
                             filtro = filtragem;
                           });
-                          print(qtdFiltros);
-                          
 
                           // para página de filtros
                         },
                         child: Row(
                           children: [
-                              Container(
-                                padding: EdgeInsets.all(6),
-                                
-                                child: Text(qtdFiltros.toString(), style: const TextStyle(
-                                        color: Colors.purple,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 14),),
+                            Container(
+                              padding: const EdgeInsets.all(6),
+                              child: Text(
+                                verificaQtdFiltros(filtro).toString(),
+                                style: const TextStyle(
+                                    color: Colors.purple,
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 14),
                               ),
-                              const Text(
-                                    "  Filtrar  ",
-                                    style: TextStyle(
-                                        color: Colors.purple,
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 14),
-                                  ),
-                                
+                            ),
+                            const Text(
+                              "  Filtrar  ",
+                              style: TextStyle(
+                                  color: Colors.purple,
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 14),
+                            ),
                             const Icon(
                               Icons.segment,
                               color: Colors.purple,
@@ -200,11 +229,11 @@ class _MyHomePageState extends State<MyHomePage> {
                 //100 é o tamanho de cada widget
                 height: participantes!.length * 90,
                 child: ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                 shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
                     itemCount: participantes!.length,
                     itemBuilder: ((context, i) {
-                      return cadaParticipante(participantes!, i);
+                      return cadaParticipante(participantes!, i, filtro);
                     })),
               )
             ],
@@ -214,48 +243,77 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget cadaParticipante(List<Participante> participantes, int i) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      decoration: const BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-                  width: 1, color: Color.fromARGB(73, 158, 158, 158)))),
-      margin: const EdgeInsets.symmetric(horizontal: 15),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children:  [
-                Text(
-                  participantes[i].nome,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      overflow: TextOverflow.fade,
-                      fontSize: 15),
-                ),
-                Text(
-                   participantes[i].tipoIngresso.toString(),
-                  textAlign: TextAlign.start,
-                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.normal),
-                ),
-                Text(
-                   participantes[i].localizador,
-                  style: const TextStyle(fontSize: 15, color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-          const Spacer(),
-            participantes[i].checkIn
-             ? Icon(Icons.check,color: Colors.green) 
-             : Container()
+  Widget cadaParticipante(
+      List<Participante> participantes, int i, Filtro filtroUsuario) {
+
+        if(filtroUsuario.tipoIngresso != TicketType.todos){
+          if(participantes[i].tipoIngresso != filtroUsuario.tipoIngresso ){
+            return Container();
+          }
+        }
+        if(filtroUsuario.checkIn != null){
+          if(participantes[i].checkIn != filtroUsuario.checkIn){
+           return Container();
+        }
+        }
+        
+        
+            if(filtro.nome != null){
+              if (participantes[i].nome != filtroUsuario.nome &&
+                participantes[i].email != filtroUsuario.nome &&
+                participantes[i].localizador != filtroUsuario.nome 
+                
+                ) {
+                  
+              return Container();
+            }
+            }
+            
           
-        ],
-      ),
-    );
+          
+          
+      return Container(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: const BoxDecoration(
+            border: Border(
+                bottom: BorderSide(
+                    width: 1, color: Color.fromARGB(73, 158, 158, 158)))),
+        margin: const EdgeInsets.symmetric(horizontal: 15),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: const EdgeInsets.only(top: 10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    participantes[i].nome,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.fade,
+                        fontSize: 15),
+                  ),
+                  Text(
+                    participantes[i].tipoIngresso.toString(),
+                    textAlign: TextAlign.start,
+                    style: const TextStyle(
+                        fontSize: 14, fontWeight: FontWeight.normal),
+                  ),
+                  Text(
+                    participantes[i].localizador,
+                    style: const TextStyle(fontSize: 15, color: Colors.grey),
+                  ),
+                ],
+              ),
+            ),
+            const Spacer(),
+            participantes[i].checkIn
+                ? Icon(Icons.check, color: Colors.green)
+                : Container()
+          ],
+        ),
+      );
+    
   }
 }
