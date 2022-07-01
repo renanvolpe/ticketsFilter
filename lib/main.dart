@@ -30,11 +30,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Participante>? participantes;
-  
+  List<Participante> participantes  = [];
+  List<Participante> usuariosFiltrados = [];
+
   Filtro filtro = Filtro();
   
   int qtdFiltros = 0;
+  int totalParticipantes = 0;
+  
 
   List<Participante>? generateParticipantes() {
     //criando pessoas aleatorias
@@ -49,7 +52,10 @@ class _MyHomePageState extends State<MyHomePage> {
         "cassio@gmail.com", "Cassio", "ASDSADAD", false, TicketType.meia);
     Participante part5 = Participante(
         "iago@gmail.com.br", "Iago", "FDSFSDC", true, TicketType.teste);
-    
+    Participante part6 = Participante(
+        "jose@gmail.com", "Jose", "SAJIJIDS", true, TicketType.gratuito);    
+    Participante part7 = Participante(
+        "arthur@gmail.com.br", "Arthur", "AS890GD", true, TicketType.meia);
 
 
 List<Participante> listaGeral = <Participante>[
@@ -58,12 +64,16 @@ List<Participante> listaGeral = <Participante>[
       part3,
       part4,
       part5,
-      part1,
-      part2,
-      part4,
-      part5,
-      part3
+      part6,
+      part7
+      
     ];
+    if(usuariosFiltrados == []){
+      setState(() {
+      usuariosFiltrados = listaGeral;
+    });
+    }
+    
 
     return listaGeral;
   }
@@ -83,14 +93,38 @@ List<Participante> listaGeral = <Participante>[
   return qtdFiltros;
   }
 
+  void _runFilter(String enteredKeyword) {
+    List<Participante> results = [];
+    if (enteredKeyword.isEmpty) {
+      
+      results = participantes;
+    } else {
+      results = participantes
+          .where((part) =>
+              part.nome.toLowerCase().contains(enteredKeyword.toLowerCase(), 0) ||
+              part.localizador.toLowerCase().contains(enteredKeyword.toLowerCase(), 0) 
+              )
+          .toList() ;
+      
+    }
+
+
+    
+
+    
+    setState(() {
+      print(results.length);
+     usuariosFiltrados = results;
+    });
+  }
+
   TextEditingController filterController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    participantes = generateParticipantes();
 
-    if(filtro.tipoIngresso == null){
-      filtro.tipoIngresso = TicketType.todos;
-    }
+    participantes = generateParticipantes()!;
+
+    filtro.tipoIngresso ??= TicketType.todos;
     
     return Scaffold(
       appBar: AppBar(
@@ -102,7 +136,9 @@ List<Participante> listaGeral = <Participante>[
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+             
+            },
             icon: const Icon(
               Icons.arrow_back,
               color: Colors.purple,
@@ -133,17 +169,16 @@ List<Participante> listaGeral = <Participante>[
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
+             
+
               Container(
                   margin: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextField(
                     controller: filterController,
                     onChanged: (value) {
-                      setState(() {
-                        if (value == "")
-                          filtro.nome = null;
-                        else
-                          filtro.nome = value;
-                      });
+                      _runFilter(value);
+
+                      
                     },
                     decoration: const InputDecoration(
                         filled: true,
@@ -167,7 +202,7 @@ List<Participante> listaGeral = <Participante>[
                     Container(
                         margin: const EdgeInsets.only(top: 15),
                         child: Text(
-                          participantes!.length.toString() + " participantes",
+                          usuariosFiltrados.length.toString() + " participantes", //Fazer numero de participantes que aparecem na pesquisa
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.purple,
@@ -227,15 +262,19 @@ List<Participante> listaGeral = <Participante>[
                   ],
                 ),
               ),
+
+              
               Container(
-                //100 é o tamanho de cada widget
-                height: participantes!.length * 90,
+                //90 é o tamanho de cada widget
+                height: usuariosFiltrados.length * 90,
                 child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
-                    itemCount: participantes!.length,
+                    itemCount: usuariosFiltrados.length,
                     itemBuilder: ((context, i) {
-                      return cadaParticipante(participantes!, i, filtro);
+                     
+                      
+                      return cadaParticipante(usuariosFiltrados, i, filtro);
                     })),
               )
             ],
@@ -260,20 +299,11 @@ List<Participante> listaGeral = <Participante>[
         }
         
         
-            if(filtro.nome != null){
-              if (participantes[i].nome != filtroUsuario.nome &&
-                participantes[i].email != filtroUsuario.nome &&
-                participantes[i].localizador != filtroUsuario.nome 
-                
-                ) {
-                  
-              return Container();
-            }
-            }
+            
             
           
           
-          
+       
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: const BoxDecoration(
@@ -318,4 +348,33 @@ List<Participante> listaGeral = <Participante>[
       );
     
   }
+}
+
+class CustomSearchHintDelegate extends SearchDelegate<String> {
+  CustomSearchHintDelegate({
+    required String hintText,
+  }) : super(
+    searchFieldLabel: hintText,
+    keyboardType: TextInputType.text,
+    textInputAction: TextInputAction.search,
+  );
+
+  @override
+  Widget buildLeading(BuildContext context) => const Text('leading');
+
+  @override
+  PreferredSizeWidget buildBottom(BuildContext context) {
+    return const PreferredSize(
+       preferredSize: Size.fromHeight(56.0),
+       child: Text('bottom'));
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) => const Text('suggestions');
+
+  @override
+  Widget buildResults(BuildContext context) => const Text('results');
+
+  @override
+  List<Widget> buildActions(BuildContext context) => <Widget>[];
 }
