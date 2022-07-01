@@ -118,7 +118,8 @@ List<Participante> listaGeral = <Participante>[
           filtrados = filtrados
           .where((part) =>
               part.nome.toLowerCase().contains(filtros.nome!.toLowerCase(), 0) ||
-              part.localizador.toLowerCase().contains(filtros.nome!.toLowerCase(), 0) 
+              part.localizador.toLowerCase().contains(filtros.nome!.toLowerCase(), 0) ||
+              part.email.toLowerCase().contains(filtros.nome!.toLowerCase(), 0) 
               )
           .toList() ;
         });
