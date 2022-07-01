@@ -87,10 +87,10 @@ List<Participante> listaGeral = <Participante>[
   int verificaQtdFiltros(Filtro filtros){
     qtdFiltros = 0;
 
-    if(filtros.nome != null)
+    if(filtros.nome != null && filtros.nome != "")
     qtdFiltros++;
 
-    if(filtros.checkIn == true)
+    if(filtros.checkIn != null)
     qtdFiltros++;
 
     if(filtros.tipoIngresso != TicketType.todos)
@@ -99,30 +99,105 @@ List<Participante> listaGeral = <Participante>[
   return qtdFiltros;
   }
 
-  void _runFilter(String enteredKeyword) {
-    List<Participante> results = [];
-    if (enteredKeyword.isEmpty) {
+  bool? tripleFilter(Filtro filtros){
+    filtro.nome ??= "";
+     List<Participante> filtrados = participantes;
+
+      if(filtro.tipoIngresso == TicketType.todos && filtro.nome!.isEmpty && filtro.checkIn ==null){
+        setState(() {
+         usuariosFiltrados = filtrados; 
+        });
+        print(usuariosFiltrados.toList());
+       return null; 
+      }
       
-      results = participantes;
-    } else {
-      results = participantes
+      if(filtro.nome!.isEmpty){
+        //sem filtro de texto
+      }else{
+        setState(() {
+          filtrados = filtrados
           .where((part) =>
-              part.nome.toLowerCase().contains(enteredKeyword.toLowerCase(), 0) ||
-              part.localizador.toLowerCase().contains(enteredKeyword.toLowerCase(), 0) 
+              part.nome.toLowerCase().contains(filtros.nome!.toLowerCase(), 0) ||
+              part.localizador.toLowerCase().contains(filtros.nome!.toLowerCase(), 0) 
               )
           .toList() ;
+        });
+         
+          
+          }
+       
+
+      if(filtro.tipoIngresso == TicketType.todos){
+        //filtro para todos os tickets
+      } else if(filtro.tipoIngresso == TicketType.gratuito){
+        setState(() {
+          filtrados = filtrados
+          .where((part) =>
+              part.tipoIngresso == TicketType.gratuito
+              )
+          .toList() ;
+
+        });
+        
+      } else if(filtro.tipoIngresso == TicketType.meia){
+         setState(() {
+          filtrados = filtrados
+          .where((part) =>
+              part.tipoIngresso == TicketType.meia
+              )
+          .toList() ;
+
+        });
+      }else if(filtro.tipoIngresso == TicketType.teste){
+         setState(() {
+          filtrados = filtrados
+          .where((part) =>
+              part.tipoIngresso == TicketType.teste
+              )
+          .toList() ;
+
+        });
+      }
+
+      if(filtro.checkIn == null){
+        //sem filtro para check in
+      } else if( filtro.checkIn == true){
+        setState(() {
+          filtrados = filtrados
+          .where((part) =>
+              part.checkIn == true
+              )
+          .toList() ;
+
+        });
       
-    }
+      } else{
+        //para falso
+        setState(() {
+          filtrados = filtrados
+          .where((part) =>
+              part.checkIn == false
+              )
+          .toList() ;
+
+        });
+
+      }
+
+      setState(() {
+        usuariosFiltrados = filtrados;
+      });
+
+      //print(usuariosFiltrados.length);
 
 
-    
 
-    
-    setState(() {
-      print(results.length);
-     usuariosFiltrados = results;
-    });
   }
+
+ 
+  
+
+ 
 
   
 
@@ -186,7 +261,8 @@ List<Participante> listaGeral = <Participante>[
                   child: TextField(
                     controller: filterController,
                     onChanged: (value) {
-                      _runFilter(value);
+                      filtro.nome = value;
+                      tripleFilter(filtro);
 
                       
                     },
@@ -229,13 +305,22 @@ List<Participante> listaGeral = <Participante>[
                           final Filtro filtragem = await Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const FilterScreen()),
+                                builder: (context) =>  FilterScreen(filtro: filtro)),
                           );
+                          
+
+                          
+
+                          //_runFilterTicket(filtragem.tipoIngresso!, usuariosFiltrados);
+
+                         // _runFilterCheck(filtragem.checkIn, usuariosFiltrados);
 
                           setState(() {
-                            
+                            filtragem.nome = filtro.nome;
                             filtro = filtragem;
                           });
+
+                          tripleFilter(filtro);
 
                           // para página de filtros
                         },
@@ -296,24 +381,7 @@ List<Participante> listaGeral = <Participante>[
 
   Widget cadaParticipante(
       List<Participante> participantes, int i, Filtro filtroUsuario) {
-
-        if(filtroUsuario.tipoIngresso != TicketType.todos){
-          if(participantes[i].tipoIngresso != filtroUsuario.tipoIngresso ){
-            return Container();
-          }
-        }
-        if(filtroUsuario.checkIn != null){
-          if(participantes[i].checkIn != filtroUsuario.checkIn){
-           return Container();
-        }
-        }
-        
-        
-            
-            
-          
-          
-       
+ 
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: const BoxDecoration(

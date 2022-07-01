@@ -6,14 +6,19 @@ import 'filtro.dart';
 
 
 class FilterScreen extends StatefulWidget {
-
-  const FilterScreen({Key? key }) : super(key: key);
+final Filtro? filtro;
+  const FilterScreen({Key? key,@required this.filtro }) : super(key: key);
   @override
   _FilterScreenState createState() => _FilterScreenState();
 }
 
 
 class _FilterScreenState extends State<FilterScreen> {
+
+  void initState() { 
+    verifyFiltroAntigo();
+  super.initState(); 
+}
 
   Future<Widget?> buildBottomSheet() async{
       return showModalBottomSheet<Widget>(
@@ -149,10 +154,35 @@ class _FilterScreenState extends State<FilterScreen> {
   }
   
   
-  TicketType? _character = TicketType.todos;
   
-  bool desaactive1 = true;
-  bool desaactive2 = true;
+  TicketType? _character;
+  
+  bool? desaactive1;
+  bool? desaactive2;
+
+  //verifica atributos filtro 
+ void verifyFiltroAntigo(){
+
+    if(widget.filtro!.tipoIngresso == null){
+      setState(() {
+        _character = TicketType.todos;
+      });
+    }else{
+      _character = widget.filtro!.tipoIngresso;
+    }
+
+    if(widget.filtro!.checkIn == null){
+      desaactive1 = true;
+      desaactive2 = true;
+    }else if(widget.filtro!.checkIn == false){
+      desaactive1 = true;
+      desaactive2 = false;
+    }else{
+      //se checkin for falso
+      desaactive1 = false;
+      desaactive2 = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -209,18 +239,18 @@ class _FilterScreenState extends State<FilterScreen> {
                 TextButton(
                       onPressed: (){
                       setState(() {
-                        desaactive1 = !desaactive1;
+                        desaactive1 = !desaactive1!;
                       });
                      
                     },
                     child: Container(
                     padding: const EdgeInsets.all(10),
                     decoration:  BoxDecoration(
-                      color: desaactive1 ? Colors.white : Colors.purple,
+                      color: desaactive1! ? Colors.white : Colors.purple,
                       borderRadius: const BorderRadius.all(Radius.circular(18)),
-                      border: desaactive1 ? Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),) : Border.all(width: 1.0, color:  Colors.purple ,)
+                      border: desaactive1! ? Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),) : Border.all(width: 1.0, color:  Colors.purple ,)
                     ),
-                    child: desaactive1 
+                    child: desaactive1!
                         ? const Text("Chek-in realizado", style: TextStyle( fontSize: 15, color: Colors.black, fontWeight: FontWeight.normal)) 
                         : const Text("Chek-in realizado", style: TextStyle( fontSize: 15, color: Colors.white, fontWeight: FontWeight.normal))
                          )
@@ -229,18 +259,18 @@ class _FilterScreenState extends State<FilterScreen> {
                     TextButton(
                       onPressed: (){
                       setState(() {
-                        desaactive2 = !desaactive2;
+                        desaactive2 = !desaactive2!;
                       });
                       
                         },
                         child: Container(
                         padding: const EdgeInsets.all(10),
                         decoration:  BoxDecoration(
-                          color: desaactive2 ? Colors.white : Colors.purple,
+                          color: desaactive2! ? Colors.white : Colors.purple,
                           borderRadius: const BorderRadius.all(Radius.circular(18)),
-                          border: desaactive2 ? Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),) : Border.all(width: 1.0, color:  Colors.purple ,)
+                          border: desaactive2! ? Border.all(width: 1.0, color: const Color.fromARGB(123, 158, 158, 158),) : Border.all(width: 1.0, color:  Colors.purple ,)
                         ),
-                          child: desaactive2 
+                          child: desaactive2! 
                           ? const Text("Chek-in não realizado", style: TextStyle( fontSize: 15, color: Colors.black, fontWeight: FontWeight.normal)) 
                           : const Text("Chek-in não realizado", style: TextStyle( fontSize: 15, color: Colors.white, fontWeight: FontWeight.normal))
                         )
