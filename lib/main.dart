@@ -30,6 +30,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
+@override
+void initState() { 
+  participantes = generateParticipantes()!;        
+  super.initState(); 
+}
+
   List<Participante> participantes  = [];
   List<Participante> usuariosFiltrados = [];
 
@@ -68,12 +75,11 @@ List<Participante> listaGeral = <Participante>[
       part7
       
     ];
-    if(usuariosFiltrados == []){
-      setState(() {
-      usuariosFiltrados = listaGeral;
-    });
-    }
     
+    setState(() {
+      
+     usuariosFiltrados = listaGeral;
+    });
 
     return listaGeral;
   }
@@ -118,11 +124,15 @@ List<Participante> listaGeral = <Participante>[
     });
   }
 
+  
+
   TextEditingController filterController = TextEditingController();
   @override
   Widget build(BuildContext context) {
 
-    participantes = generateParticipantes()!;
+    
+    
+    
 
     filtro.tipoIngresso ??= TicketType.todos;
     
