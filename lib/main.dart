@@ -64,6 +64,15 @@ void initState() {
         "jose@gmail.com", "Jose", "SAJIJIDS", true, TicketType.gratuito);    
     Participante part7 = Participante(
         "arthur@gmail.com.br", "Arthur", "AS890GD", true, TicketType.meia);
+    Participante part8 = Participante(
+        "Leo@gmail.com", "Leonardo", "FSMLÇDJ9", true, TicketType.meia);
+    Participante part9 = Participante(
+        "Joao@hotmail.com.br", "Joao", "FJKLAN82", false, TicketType.teste);
+    Participante part10 = Participante(
+        "Pedro@gmail.com", "Pedro", "SDFG789", false, TicketType.gratuito);
+    Participante part11 = Participante(
+        "maria@gmail.com", "Maria", "FNOUI13D", false, TicketType.teste);
+        
 
 
 List<Participante> listaGeral = <Participante>[
@@ -73,8 +82,11 @@ List<Participante> listaGeral = <Participante>[
       part4,
       part5,
       part6,
-      part7
-      
+      part7,
+      part8,
+      part9,
+      part10,
+      part11
     ];
     
     setState(() {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_free_project/filtro.dart';
 import 'package:go_free_project/participante.dart';
+import 'package:go_free_project/ticketType.dart';
 
 
 Widget cadaParticipante(
@@ -29,15 +30,15 @@ Widget cadaParticipante(
                         fontSize: 15),
                   ),
                   Text(
-                    participantes[i].tipoIngresso.toString(),
-                    textAlign: TextAlign.start,
+                    returnTicketType( participantes[i].tipoIngresso),
+                                                                                                                                   textAlign: TextAlign.start,
                     style: const TextStyle(
                         fontSize: 14, fontWeight: FontWeight.normal),
                   ),
                   Text(
                     participantes[i].localizador,
                     style: const TextStyle(fontSize: 15, color: Colors.grey),
-                  ),
+                  ),                          
                 ],
               ),
             ),
@@ -49,4 +50,18 @@ Widget cadaParticipante(
         ),
       );
     
+  }
+
+  String returnTicketType(TicketType ticket){
+    if(ticket == TicketType.gratuito)
+      return "Ingresso Gratuíto";
+    
+    if(ticket == TicketType.teste)
+      return "Ingresso Teste";
+
+    
+      return "Ingresso Meia";
+   
+
+
   }
