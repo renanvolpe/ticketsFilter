@@ -283,7 +283,7 @@ List<Participante> listaGeral = <Participante>[
                     decoration: const InputDecoration(
                         filled: true,
                         fillColor: Color.fromARGB(30, 158, 158, 158),
-                        hintText: "Nome, e-mail, localizador",
+                        hintText: "Nome, e-mail, localizado",
                         hintStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 15,

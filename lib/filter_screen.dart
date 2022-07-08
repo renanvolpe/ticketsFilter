@@ -207,7 +207,7 @@ class _FilterScreenState extends State<FilterScreen> {
             
              Center(
                child: Text(
-                      "Filtrar participantes",
+                      "Filtrar participante",
                       style: TextStyle(
                         
                         fontWeight: FontWeight.normal,
