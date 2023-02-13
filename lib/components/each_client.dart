@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_free_project/filtro.dart';
-import 'package:go_free_project/participante.dart';
-import 'package:go_free_project/ticketType.dart';
+import 'package:go_free_project/model/clients.dart';
+import 'package:go_free_project/model/ticketType.dart';
 
 
-Widget cadaParticipante(
-      List<Participante> participantes, int i, Filtro filtroUsuario) {
+Widget eachClient(
+      List<Client> participantes, int i, Filter filtroUsuario) {
  
       return Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
