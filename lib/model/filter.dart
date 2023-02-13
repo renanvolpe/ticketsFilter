@@ -1,6 +1,6 @@
 import 'package:go_free_project/model/ticketType.dart';
 
-class Filter {
+class Filter{
    String? email;
    String? nome;
    String? localizador;

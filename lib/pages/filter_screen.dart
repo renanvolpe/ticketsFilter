@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_free_project/filtro.dart';
+import 'package:go_free_project/model/filter.dart';
 import 'package:go_free_project/model/ticketType.dart';
 
 class FilterScreen extends StatefulWidget {
