@@ -1,4 +1,4 @@
-import 'package:go_free_project/model/ticketType.dart';
+import 'package:go_free_project/model/ticket_type.dart';
 
 class Client {
    String email;

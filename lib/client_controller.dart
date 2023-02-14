@@ -1,7 +1,7 @@
 
 
 import 'package:go_free_project/model/clients.dart';
-import 'package:go_free_project/model/ticketType.dart';
+import 'package:go_free_project/model/ticket_type.dart';
 
 List<Client> generateClients() {
     //criando pessoas aleatorias

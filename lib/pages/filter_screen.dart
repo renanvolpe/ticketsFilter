@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_free_project/model/filter.dart';
-import 'package:go_free_project/model/ticketType.dart';
+import 'package:go_free_project/model/ticket_type.dart';
 
 class FilterScreen extends StatefulWidget {
   final Filter? filtro;
@@ -44,7 +44,6 @@ class _FilterScreenState extends State<FilterScreen> {
                       ],
                     ),
                   ),
-
                   Container(
                     padding: const EdgeInsets.only(bottom: 5),
                     decoration: const BoxDecoration(

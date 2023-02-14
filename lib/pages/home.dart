@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_free_project/client_controller.dart';
 import 'package:go_free_project/components/each_client.dart';
+import 'package:go_free_project/filter_controller.dart';
 import 'package:go_free_project/model/clients.dart';
 import 'package:go_free_project/model/filter.dart';
-import 'package:go_free_project/model/ticketType.dart';
 import 'package:go_free_project/pages/filter_screen.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -19,6 +19,8 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Client> clients = [];
   List<Client> usersFiltereds = [];
   late Filter filtro;
+  late FilterController filterController;
+  TextEditingController filterText = TextEditingController();
 
   int qtdFilters = 0;
   int totalclients = 0;
@@ -27,108 +29,12 @@ class _MyHomePageState extends State<MyHomePage> {
   void didChangeDependencies() {
     usersFiltereds = clients = generateClients();
     filtro = Filter();
+    filterController = FilterController();
     super.didChangeDependencies();
   }
 
-  int verificaQtdFilters(Filter filters) {
-    qtdFilters = 0;
-
-    if (filters.nome != null && filters.nome != "") {
-      qtdFilters++;
-    }
-
-    if (filters.checkIn != null) {
-      qtdFilters++;
-    }
-
-    if (filters.tipoIngresso != TicketType.todos) {
-      qtdFilters++;
-    }
-
-    return qtdFilters;
-  }
-
-  bool? tripleFilter(Filter filtros) {
-    filtro.nome ??= "";
-    List<Client> filtrados = clients;
-
-    if (filtro.tipoIngresso == TicketType.todos &&
-        filtro.nome!.isEmpty &&
-        filtro.checkIn == null) {
-      setState(() {
-        usersFiltereds = filtrados;
-      });
-
-      return null;
-    }
-
-    if (filtro.nome!.isEmpty) {
-      //sem filtro de texto
-    } else {
-      setState(() {
-        filtrados = filtrados
-            .where((part) =>
-                part.nome
-                    .toLowerCase()
-                    .contains(filtros.nome!.toLowerCase(), 0) ||
-                part.localizador
-                    .toLowerCase()
-                    .contains(filtros.nome!.toLowerCase(), 0) ||
-                part.email
-                    .toLowerCase()
-                    .contains(filtros.nome!.toLowerCase(), 0))
-            .toList();
-      });
-    }
-
-    if (filtro.tipoIngresso == TicketType.todos) {
-      //filtro para todos os tickets
-    } else if (filtro.tipoIngresso == TicketType.gratuito) {
-      setState(() {
-        filtrados = filtrados
-            .where((part) => part.tipoIngresso == TicketType.gratuito)
-            .toList();
-      });
-    } else if (filtro.tipoIngresso == TicketType.meia) {
-      setState(() {
-        filtrados = filtrados
-            .where((part) => part.tipoIngresso == TicketType.meia)
-            .toList();
-      });
-    } else if (filtro.tipoIngresso == TicketType.teste) {
-      setState(() {
-        filtrados = filtrados
-            .where((part) => part.tipoIngresso == TicketType.teste)
-            .toList();
-      });
-    }
-
-    if (filtro.checkIn == null) {
-      //sem filtro para check in
-    } else if (filtro.checkIn == true) {
-      setState(() {
-        filtrados = filtrados.where((part) => part.checkIn == true).toList();
-      });
-    } else {
-      //para falso
-      setState(() {
-        filtrados = filtrados.where((part) => part.checkIn == false).toList();
-      });
-    }
-
-    setState(() {
-      usersFiltereds = filtrados;
-    });
-    return null;
-
-    //print(usuariosFiltrados.length);
-  }
-
-  TextEditingController filterController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    filtro.tipoIngresso ??= TicketType.todos;
-
     return Container(
       decoration:
           BoxDecoration(border: Border.all(width: 2, color: Colors.purple)),
@@ -163,10 +69,13 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                   margin: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextField(
-                    controller: filterController,
+                    controller: filterText,
                     onChanged: (value) {
                       filtro.nome = value;
-                      tripleFilter(filtro);
+                      setState(() {
+                        usersFiltereds =
+                            filterController.tripleFilter(filtro, clients);
+                      });
                     },
                     decoration: const InputDecoration(
                         filled: true,
@@ -205,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           borderRadius: BorderRadius.all(Radius.circular(25))),
                       child: TextButton(
                         onPressed: () async {
-                          final Filter filtragem = await Navigator.push(
+                          Filter filtragem = await Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
@@ -217,17 +126,16 @@ class _MyHomePageState extends State<MyHomePage> {
                             filtro = filtragem;
                           });
 
-                          tripleFilter(filtro);
-
-                          // para página de filtros
+                          usersFiltereds =
+                              filterController.tripleFilter(filtro, clients);
                         },
                         child: Row(
                           children: [
                             Container(
                               padding: const EdgeInsets.all(6),
                               child: Text(
-                                verificaQtdFilters(filtro) > 0
-                                    ? verificaQtdFilters(filtro).toString()
+                                filterController.qtdFilters > 0
+                                    ? filterController.qtdFilters.toString()
                                     : "",
                                 style: const TextStyle(
                                     color: Colors.purple,
