@@ -23,14 +23,11 @@ class _FilterScreenState extends State<FilterScreen> {
         return StatefulBuilder(builder: (BuildContext context,
             StateSetter setState /*You can rename this!*/) {
           return Container(
-            //height: 200,
             color: Colors.white,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  //negocio de abaixar a aba
-
                   Container(
                     margin:
                         const EdgeInsets.only(left: 15, bottom: 10, top: 15),
