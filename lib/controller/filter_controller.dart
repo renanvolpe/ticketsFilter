@@ -10,7 +10,7 @@ class FilterController {
   void verificaQtdFilters(Filter filters) {
     qtdFilters = 0;
 
-    if (filters.nome != "") {
+    if (filters.nome != "" || filters.email != "" || filters.localizador != "") {
       qtdFilters++;
     }
 
