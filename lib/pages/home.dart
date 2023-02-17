@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:go_free_project/client_controller.dart';
 import 'package:go_free_project/components/each_client.dart';
-import 'package:go_free_project/filter_controller.dart';
+import 'package:go_free_project/controller/client_controller.dart';
+import 'package:go_free_project/controller/filter_controller.dart';
 import 'package:go_free_project/model/clients.dart';
 import 'package:go_free_project/model/filter.dart';
 import 'package:go_free_project/pages/filter_screen.dart';
