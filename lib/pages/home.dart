@@ -16,6 +16,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //client is to get all of clients registred
+  //users filtred is to all clients with(or not) filter
   List<Client> clients = [];
   List<Client> usersFiltereds = [];
   late Filter filtro;

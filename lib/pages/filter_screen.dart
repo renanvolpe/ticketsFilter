@@ -232,12 +232,12 @@ class _FilterScreenState extends State<FilterScreen> {
                                     color: Colors.purple,
                                   )),
                         child: desaactive1!
-                            ? const Text("Chek-in realizado",
+                            ? const Text("Check-in realizado",
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black,
                                     fontWeight: FontWeight.normal))
-                            : const Text("Chek-in realizado",
+                            : const Text("Check-in realizado",
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.white,
@@ -265,12 +265,12 @@ class _FilterScreenState extends State<FilterScreen> {
                                     color: Colors.purple,
                                   )),
                         child: desaactive2!
-                            ? const Text("Chek-in não realizado",
+                            ? const Text("Check-in não realizado",
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.black,
                                     fontWeight: FontWeight.normal))
-                            : const Text("Chek-in não realizado",
+                            : const Text("Check-in não realizado",
                                 style: TextStyle(
                                     fontSize: 15,
                                     color: Colors.white,

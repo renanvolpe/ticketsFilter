@@ -23,26 +23,54 @@ class FilterController {
     }
   }
 
+  //verify and aplly filtes from all clients
   List<Client> tripleFilter(Filter filtro, List<Client> allClients) {
+    //verify if has no filter
+    bool noFiltter = verifyNoFilter(filtro);
+    if (noFiltter) return allClients;
+
+    //filter text form field
+    allClients = filterField(filtro, allClients);
+
+    //verify ticket type
+    allClients = verifyTicketType(filtro, allClients);
+
+    //verify if ticket was, or not, checked in
+    allClients = verifyCheckIn(filtro, allClients);
+
+    verificaQtdFilters(filtro);
+
+    return allClients;
+  }
+
+  bool verifyNoFilter(Filter filtro) {
     if (filtro.tipoIngresso == TicketType.todos &&
         filtro.nome.isEmpty &&
         filtro.checkIn == null) {
-      return allClients;
+      return true;
     }
+    return false;
+  }
 
+  List<Client> filterField(Filter filtro, List<Client> allClients) {
     if (filtro.nome.isNotEmpty) {
       allClients = allClients
           .where((part) =>
-              part.nome.toLowerCase().contains(filtro.nome.toLowerCase(), 0) ||
+              //to filter name
+              part.nome.toLowerCase().contains(filtro.nome.toLowerCase()) ||
+              //to filter localizator
               part.localizador
                   .toLowerCase()
-                  .contains(filtro.nome.toLowerCase(), 0) ||
-              part.email.toLowerCase().contains(filtro.nome.toLowerCase(), 0))
+                  .contains(filtro.nome.toLowerCase()) ||
+              //to filter e-mail
+              part.email.toLowerCase().contains(filtro.nome.toLowerCase()))
           .toList();
     }
+    return allClients;
+  }
 
-    if (filtro.tipoIngresso == TicketType.todos) {
-    } else if (filtro.tipoIngresso == TicketType.gratuito) {
+  List<Client> verifyTicketType(Filter filtro, List<Client> allClients) {
+    if (filtro.tipoIngresso == TicketType.gratuito) {
       allClients = allClients
           .where((part) => part.tipoIngresso == TicketType.gratuito)
           .toList();
@@ -55,16 +83,18 @@ class FilterController {
           .where((part) => part.tipoIngresso == TicketType.teste)
           .toList();
     }
+    return allClients;
+  }
 
+  List<Client> verifyCheckIn(Filter filtro, List<Client> allClients) {
     if (filtro.checkIn == null) {
     } else if (filtro.checkIn == true) {
       allClients = allClients.where((part) => part.checkIn == true).toList();
     } else {
       allClients = allClients.where((part) => part.checkIn == false).toList();
     }
-
-    verificaQtdFilters(filtro);
-    
     return allClients;
   }
+
+  
 }
